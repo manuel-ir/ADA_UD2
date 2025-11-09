@@ -1,0 +1,94 @@
+drop database if exists EMPRESA;
+CREATE DATABASE IF NOT EXISTS EMPRESA;
+USE EMPRESA;
+
+CREATE TABLE CENTROS (
+    Numero INT PRIMARY KEY,
+    Nombre VARCHAR(20),
+    Direccion VARCHAR(30)
+);
+
+CREATE TABLE EMPLEADOS (
+    Cod INT PRIMARY KEY,
+    Departamento INT,
+    Telefono INT,
+    Fecha_nacimiento DATE,
+    Fecha_ingreso DATE,
+    Salario DECIMAL(10, 2),
+    Comision DECIMAL(10, 2) NULL,
+    Num_hijos INT,
+    Nombre VARCHAR(20)
+);
+
+CREATE TABLE DEPARTAMENTOS (
+    Numero INT PRIMARY KEY,
+    Centro INT,
+    Director INT,
+    Tipo_dir CHAR(1),
+    Presupuesto DECIMAL(10, 2),
+    Depto_jefe INT NULL,
+    Nombre VARCHAR(20),
+
+    CONSTRAINT chk_tipo_dir CHECK (Tipo_dir IN ('P', 'F')),
+    CONSTRAINT fk_centro FOREIGN KEY (Centro) REFERENCES CENTROS(Numero),
+    CONSTRAINT fk_director FOREIGN KEY (Director) REFERENCES EMPLEADOS(Cod),
+    CONSTRAINT fk_depto_jefe FOREIGN KEY (Depto_jefe) REFERENCES DEPARTAMENTOS(Numero)
+);
+
+ALTER TABLE EMPLEADOS
+ADD CONSTRAINT fk_departamento
+FOREIGN KEY (Departamento) REFERENCES DEPARTAMENTOS(Numero);
+
+-- Desactiva la comprobación de claves foráneas para la inserción de datos
+SET FOREIGN_KEY_CHECKS=0;
+
+-- Inserts de centros
+insert into CENTROS values (10, 'SEDE CENTRAL', 'C. ALCALA 820, MADRID');
+insert into CENTROS values (20, 'RELACION CON CLIENTE', 'C. ATOCHA 405, MADRID');
+
+-- Inserts de departamentos
+insert into DEPARTAMENTOS values (100, 10, 260, 'P', 12, null, 'DIRECCION GENERAL');
+insert into DEPARTAMENTOS values (110, 20, 180, 'P', 15, 100, 'DIRECC.COMERCIAL');
+insert into DEPARTAMENTOS values (111, 20, 180, 'F', 11, 110, 'SECTOR INDUSTRIAL');
+insert into DEPARTAMENTOS values (112, 20, 270, 'P', 9, 100, 'SECTOR SERVICIOS');
+insert into DEPARTAMENTOS values (120, 20, 150, 'F', 3, 100, 'ORGANIZACION');
+insert into DEPARTAMENTOS values (121, 10, 150, 'P', 2, 120, 'PERSONAL');
+insert into DEPARTAMENTOS values (122, 10, 350, 'P', 6, 120, 'PROCESO DE DATOS');
+insert into DEPARTAMENTOS values (130, 10, 310, 'P', 2, 100, 'FINANZAS');
+
+-- Inserts de empleados
+insert into EMPLEADOS values (110, 121, 350, '1914-02-05', '2010-11-01', 1310, null, 3, 'PONS, CESAR');
+insert into EMPLEADOS values (120, 112, 840, '1918-10-06', '2009-06-02', 1350, 110, 1, 'LASA, 03IO');
+insert into EMPLEADOS values (130, 112, 810, '1936-02-07', '2009-11-03', 1290, 110, 2, 'TEROL, LUCIANO');
+insert into EMPLEADOS values (150, 121, 340, '1939-01-09', '2010-08-04', 1440, null, 0, 'PEREZ, 07IO');
+insert into EMPLEADOS values (160, 111, 740, '1939-11-10', '2009-07-05', 1310, 110, 2, 'AGUIRRE, AUREO');
+insert into EMPLEADOS values (180, 110, 508, '1945-03-11', '2018-10-06', 1480, 50, 2, 'PEREZ, 03COS');
+insert into EMPLEADOS values (190, 121, 350, '1995-02-12', '2012-05-07', 1300, null, 4, 'VEIGA, 07IANA');
+insert into EMPLEADOS values (210, 100, 200, '1990-01-13', '2018-09-08', 1380, null, 2, 'GALVEZ, PILAR');
+insert into EMPLEADOS values (240, 111, 760, '1988-02-14', '2016-02-09', 1280, 100, 3, 'SANZ, LAVINIA');
+insert into EMPLEADOS values (250, 100, 250, '2001-03-15', '2017-10-10', 1450, null, 0, 'ALBA, ADRIANA');
+insert into EMPLEADOS values (260, 100, 220, '2000-07-16', '2019-12-11', 1720, null, 6, 'LOPEZ, ANTONIO');
+insert into EMPLEADOS values (270, 112, 800, '1975-09-17', '2021-05-12', 1380, 80, 3, 'GARCIA, 10AVIO');
+insert into EMPLEADOS values (280, 130, 410, '1950-10-18', '2021-01-13', 1290, null, 5, 'FLOR, DOROTEA');
+insert into EMPLEADOS values (285, 122, 620, '1999-02-19', '2020-10-14', 1380, null, 0, 'POLO, OTILIA');
+insert into EMPLEADOS values (290, 120, 910, '1991-02-20', '2018-11-15', 1270, null, 3, 'GIL, GLORIA');
+insert into EMPLEADOS values (310, 130, 480, '1987-01-21', '2020-11-16', 1420, null, 0, 'GARCIA, 08USTO');
+insert into EMPLEADOS values (320, 122, 620, '1995-02-22', '2019-12-17', 1405, null, 2, 'SANZ, CORNELIO');
+insert into EMPLEADOS values (330, 112, 850, '2001-03-23', '2019-08-18', 1280, 90, 0, 'DIEZ, AMELIA');
+insert into EMPLEADOS values (350, 122, 610, '1998-09-24', '2013-04-19', 1450, null, 1, 'CAMPS, AURELIO');
+insert into EMPLEADOS values (360, 111, 750, '1990-10-25', '2019-10-20', 1250, 100, 2, 'LARA, DORINDA');
+insert into EMPLEADOS values (370, 121, 360, '2000-01-26', '2020-06-21', 1190, null, 1, 'RUIZ, FABIOLA');
+insert into EMPLEADOS values (380, 112, 880, '2000-01-27', '2020-03-22', 1180, null, 0, '03TIN, MICAELA');
+insert into EMPLEADOS values (390, 110, 500, '2002-10-28', '2019-02-23', 1215, null, 1, 'MORAN, CARMEN');
+insert into EMPLEADOS values (400, 111, 780, '2001-11-29', '2018-08-24', 1185, null, 0, 'LARA, LUCRECIA');
+insert into EMPLEADOS values (410, 122, 660, '1996-10-30', '2014-07-25', 1175, null, 0, 'MUãOZ, AZUCENA');
+insert into EMPLEADOS values (420, 130, 450, '1994-11-30', '2012-10-26', 1400, null, 0, 'FIERRO, CLAUDIA');
+insert into EMPLEADOS values (430, 122, 650, '1979-11-03', '2016-10-27', 1210, null, 1, 'MORA, VALERIANA');
+insert into EMPLEADOS values (440, 111, 760, '1988-02-07', '2017-09-28', 1210, 100, 0, 'DURAN, LIVIA');
+insert into EMPLEADOS values (450, 112, 880, '1999-02-07', '2011-10-29', 1210, 100, 0, 'PEREZ, SABINA');
+insert into EMPLEADOS values (480, 111, 760, '2002-02-08', '2014-04-30', 1210, 100, 1, 'PINO, DIANA');
+insert into EMPLEADOS values (490, 112, 880, '2000-06-01', '2019-01-09', 1180, 100, 0, 'TORRES, HORACIO');
+insert into EMPLEADOS values (500, 111, 750, '1997-10-02', '2019-01-10', 1200, 100, 0, 'VAZQUEZ, HONORIA');
+
+-- Reactiva la comprobación de claves foráneas
+SET FOREIGN_KEY_CHECKS=1;

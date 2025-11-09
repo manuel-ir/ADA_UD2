@@ -1,0 +1,11 @@
+drop database if exists tienda;
+CREATE DATABASE tienda;
+USE tienda;
+
+CREATE TABLE clientes (
+    usuario VARCHAR(20) PRIMARY KEY,
+    password VARCHAR(20) NOT NULL,
+    direccion VARCHAR(50),
+    telefono VARCHAR(10)
+);
+
